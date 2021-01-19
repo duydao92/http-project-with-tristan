@@ -1,18 +1,31 @@
 const http = require("http");
 const port = 3000;
-const server = http
-  .createServer(function (request, response) {
-    if (request.url === "/OK") {
+
+http.createServer(function (request, response) {
+    if (request.url === "/Bonus/Redirect") {
+      response.writeHead(302, { 'Location': 'http://localhost:3000/Forbidden'});
+      response.end();
+    } else if (request.url === "/Bonus/Webpage") {
+      response.writeHead(200, { "Content-Type": "text/html" });
+      response.write('<html>OK PAGE</html>')
+      response.end();
+    } else if (request.url === "/Bonus/Created") {
+      if (request.method === "POST") {
+        response.writeHead(201)
+        response.end();
+      } else {
+        response.writeHead(404)
+        response.end();
+      }
+    } else if (request.url === "/OK") {
       console.log(" 'OK' request being processed...");
       response.writeHead(200);
-      //{ "Content-Type": "text/html" }
-      // response.write('<h1>OK PAGE</h1>')
       response.end();
     } else if (request.url === "/Created") {
       response.writeHead(201);
       response.end();
     } else if (request.url === "/Forbidden") {
-      response.writeHead(404);
+      response.writeHead(403);
       response.end();
     } else if (request.url === "/Found") {
       response.writeHead(302);
@@ -34,7 +47,7 @@ const server = http
       response.end();
     } else {
       response.writeHead(404);
-      response.end();
+      response.end()
     }
   })
   .listen(port, function () {
